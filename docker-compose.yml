@@ -5,14 +5,14 @@ services:
     build:
       context: ./docker/php
     volumes:
-      - './src:/var/www/html'
+      - './src/public:/var/www/html/src/public'
 
   nginx:
     image: nginx:latest
     ports:
       - 8080:80
     volumes:
-      - './src:/var/www/html'
+      - './src/public:/var/www/html/src/public'
       - './docker/nginx/conf.d:/etc/nginx/conf.d'
 
   postgres:
