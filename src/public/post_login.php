@@ -50,10 +50,16 @@ if(empty($errors)){
 
     $email = $_POST['email'];
     $password = $_POST['psw'];
-    $stmt = $db->prepare("SELECT * FROM users WHERE email = :email AND password = :password");
-    $stmt->execute(['email'=>$email, 'password'=>$password]);
+    $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
+    $stmt->execute(['email'=>$email]);
     $result = $stmt->fetch();
 
+    $access = "";
+    if($result['password']===$password){
+       $access = "Welcome to Site!";
+    }else{
+       $access = "Password is wrong!";
+    }
     //print_r($result);
 }
 

@@ -62,7 +62,7 @@ function validateUser(array $val): array
 return $errors;
 }
 $errors = validateUser($val);
-print_r($errors);
+//print_r($errors);
 #add to DB
 if(empty($errors)){
     $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
@@ -77,7 +77,7 @@ if(empty($errors)){
 
     $result = $stmt->fetch();
 
-    print_r($result);
+    //print_r($result);
 }
 
 require_once './registrate.php';

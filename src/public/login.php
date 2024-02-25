@@ -1,16 +1,15 @@
 <div class="container">
   <div class="card">
     <h2>Login</h2>
-      <label><?php if(!empty($result)) {
-              echo "Success";
-          }
+      <label style="color: green"><?php global $access;
+          echo $access;
       ?></label>
     <form action="post_login.php" method="POST">
-        <label><p style="color: red;">
-                <?php echo $errors['email']??"";?></p></label>
+        <label style="color: red;">
+                <?php echo $errors['email']??"";?></label>
       <input type="text" id="email" name="email" placeholder="Enter email" required>
-        <label><p style="color: red;">
-                <?php echo $errors['psw']??"";?></p></label>
+        <label style="color: red;">
+                <?php echo $errors['psw']??"";?></label>
       <input type="password" id="psw" name="psw" placeholder="Enter password" required>
       <button type="submit">Login</button>
     </form>
