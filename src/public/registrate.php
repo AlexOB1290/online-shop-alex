@@ -17,7 +17,13 @@
 
         <label for="email"><b>Email</b></label>
         <label style="color: red;">
-            <?php echo $errors['email']??"";?></label>
+            <?php echo $errors['email']??"";
+            if(!empty($st)){
+                echo "this email use";
+            }else{
+                echo"";
+            };
+            ?></label>
         <input type="text" placeholder="Enter Email" name="email" id="email" required>
 
         <label for="psw"><b>Password</b></label>

@@ -51,6 +51,14 @@ function validateUser(array $val): array
             $errors['email'] = "email is wrong";
         }
     }
+    $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
+    $email = $_POST['email'];
+    $user = $db->prepare("SELECT * FROM users WHERE email = :email");
+    $user->execute(['email'=>$email]);
+    $user = $user->fetch();
+    if($user){
+        $errors['email'] = "this email exist";
+    }
 
     if(empty($password)){
         $errors['psw'] = "password not be empty";
@@ -64,6 +72,9 @@ return $errors;
 $errors = validateUser($val);
 //print_r($errors);
 #add to DB
+
+
+
 if(empty($errors)){
     $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
 
@@ -74,10 +85,7 @@ if(empty($errors)){
     $stmt->execute(['name' => $name, 'email' => $email,'password' => $password]);
     $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
     $stmt->execute(['email'=>$email]);
-
     $result = $stmt->fetch();
-
-    //print_r($result);
 }
 
 require_once './registrate.php';

@@ -40,10 +40,20 @@ function validateLogin(array $val): array
         $errors['psw'] = "password must be more 4 symbols";
     }
 
+    $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
+    $email = $_POST['email'];
+    $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
+    $stmt->execute(['email'=>$email]);
+    $user = $stmt->fetch();
+    if($user === false){
+        $errors['email'] = "User not found";
+    }
+
     return $errors;
 }
 
 $errors = validateLogin($val);
+
 
 if(empty($errors)){
     $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
@@ -52,13 +62,16 @@ if(empty($errors)){
     $password = $_POST['psw'];
     $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
     $stmt->execute(['email'=>$email]);
-    $result = $stmt->fetch();
+    $user = $stmt->fetch();
 
     $access = "";
-    if(password_verify($password, $result['password'])) {
-       $access = "Welcome to Site!";
+    if(password_verify($password, $user['password'])) {
+        //print_r($user);
+        session_start();
+        $_SESSION['user_id'] = $user['id'];
+        header("Location: /main.php");
     }else{
-       $access = "Password is wrong!";
+       $access = "Password or email are wrong!";
     }
     //print_r($result);
 }
