@@ -25,11 +25,11 @@ function validateLogin(array $val): array
     }else{
         $res = "";
         for($i=0; $i < strlen($email); $i++) {
-            if ($email[$i] === "@" or $email[$i] ===".") {
+            if ($email[$i] === "@") {
                 $res = $res.$email[$i];
             }
         }
-        if(strlen($res)<2){
+        if(strlen($res)!==1){
             $errors['email'] = "email is wrong";
         }
     }
@@ -55,7 +55,7 @@ if(empty($errors)){
     $result = $stmt->fetch();
 
     $access = "";
-    if($result['password']===$password){
+    if(password_verify($password, $result['password'])) {
        $access = "Welcome to Site!";
     }else{
        $access = "Password is wrong!";

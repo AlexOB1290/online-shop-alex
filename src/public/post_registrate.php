@@ -43,11 +43,11 @@ function validateUser(array $val): array
     }else{
         $res = "";
         for($i=0; $i < strlen($email); $i++) {
-            if ($email[$i] === "@" or $email[$i] ===".") {
+            if ($email[$i] === "@") {
                 $res = $res.$email[$i];
             }
         }
-        if(strlen($res)<2){
+        if(strlen($res)!==1){
             $errors['email'] = "email is wrong";
         }
     }
@@ -69,7 +69,7 @@ if(empty($errors)){
 
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $password = $_POST['psw'];
+    $password = password_hash($_POST['psw'], PASSWORD_DEFAULT);
     $stmt = $db->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
     $stmt->execute(['name' => $name, 'email' => $email,'password' => $password]);
     $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
