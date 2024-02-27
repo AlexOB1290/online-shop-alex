@@ -1,7 +1,9 @@
 <?php
 
 $val = $_POST;
-# Validation
+if(empty($val)){
+    exit("ERROR! empty fills!");
+}
 function validateUser(array $val): array
 {
     $errors = [];
@@ -51,14 +53,15 @@ function validateUser(array $val): array
             $errors['email'] = "email is wrong";
         }
     }
-    $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
-    $email = $_POST['email'];
-    $user = $db->prepare("SELECT * FROM users WHERE email = :email");
-    $user->execute(['email'=>$email]);
-    $user = $user->fetch();
-    if($user){
-        $errors['email'] = "this email exist";
-    }
+
+$db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
+$email = strtolower($val['email']);
+$user = $db->prepare("SELECT * FROM users WHERE email = :email");
+$user->execute(['email'=>$email]);
+$user = $user->fetch();
+if($user){
+    $errors['email'] = "this email exist";
+}
 
     if(empty($password)){
         $errors['psw'] = "password not be empty";
@@ -79,7 +82,7 @@ if(empty($errors)){
     $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
 
     $name = $_POST['name'];
-    $email = $_POST['email'];
+    $email = strtolower($_POST['email']);
     $password = password_hash($_POST['psw'], PASSWORD_DEFAULT);
     $stmt = $db->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
     $stmt->execute(['name' => $name, 'email' => $email,'password' => $password]);
