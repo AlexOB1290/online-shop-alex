@@ -1,9 +1,4 @@
 <?php
-
-$val = $_POST;
-if(empty($val)){
-    exit("ERROR! empty fills!");
-}
 function validateUser(array $val): array
 {
     $errors = [];
@@ -42,7 +37,7 @@ function validateUser(array $val): array
         $errors['email'] = "email not be empty";
     }elseif(strlen($email)<2){
         $errors['email'] = "email must be more 1 symbols";
-    }else{
+    }elseif(strlen($email)>2){
         $res = "";
         for($i=0; $i < strlen($email); $i++) {
             if ($email[$i] === "@") {
@@ -53,15 +48,18 @@ function validateUser(array $val): array
             $errors['email'] = "email is wrong";
         }
     }
+    if(empty($errors['email'])) {
+        $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
 
-$db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
-$email = strtolower($val['email']);
-$user = $db->prepare("SELECT * FROM users WHERE email = :email");
-$user->execute(['email'=>$email]);
-$user = $user->fetch();
-if($user){
-    $errors['email'] = "this email exist";
-}
+        $email = $val['email'];
+
+        $user = $db->prepare("SELECT * FROM users WHERE email = :email");
+        $user->execute(['email' => $email]);
+        $user = $user->fetch();
+        if ($user) {
+            $errors['email'] = "this email exist";
+        }
+    }
 
     if(empty($password)){
         $errors['psw'] = "password not be empty";
@@ -72,7 +70,7 @@ if($user){
     }
 return $errors;
 }
-$errors = validateUser($val);
+$errors = validateUser($_POST);
 //print_r($errors);
 #add to DB
 
@@ -82,12 +80,14 @@ if(empty($errors)){
     $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
 
     $name = $_POST['name'];
-    $email = strtolower($_POST['email']);
+    $email = $_POST['email'];
     $password = password_hash($_POST['psw'], PASSWORD_DEFAULT);
+
     $stmt = $db->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
     $stmt->execute(['name' => $name, 'email' => $email,'password' => $password]);
     $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
     $stmt->execute(['email'=>$email]);
+
     $result = $stmt->fetch();
 }
 
