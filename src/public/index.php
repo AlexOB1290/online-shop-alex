@@ -28,13 +28,13 @@ if($uri === '/registrate'){
     if ($method === 'GET') {
         $prod->addProd();
     } elseif ($method === 'POST') {
-        require_once 'post_add_product.php';
+        $prod->addUserProd();;
     } else {
         echo "$method do not support for $uri";
     }
 } elseif ($uri === '/main'){
     if($method === 'GET'){
-        require_once './../View/main.php';
+        require_once 'main.php';
     } else {
         echo "$method do not support for $uri";
     }

@@ -5,30 +5,30 @@
 class UserController
 {
 
-    private function validate(array $val): array
+    private function validate(array $post): array
     {
         $errors = [];
 
-        if(isset($val['name'])){
-            $name = $val['name'];
+        if(isset($post['name'])){
+            $name = $post['name'];
         }else{
             $errors['name'] = "name must be fill";
         }
 
-        if(isset($val['email'])){
-            $email = $val['email'];
+        if(isset($post['email'])){
+            $email = $post['email'];
         }else{
             $errors['email'] = "email must be fill";
         }
 
-        if(isset($val['psw'])){
-            $password = $val['psw'];
+        if(isset($post['psw'])){
+            $password = $post['psw'];
         }else{
             $errors['psw'] = "psw must be fill";
         }
 
-        if(isset($val['psw-repeat'])){
-            $passwordRep = $val['psw-repeat'];
+        if(isset($post['psw-repeat'])){
+            $passwordRep = $post['psw-repeat'];
         }else{
             $errors['psw-repeat'] = "psw-repeat must be fill";
         }

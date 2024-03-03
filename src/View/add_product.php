@@ -7,26 +7,22 @@ if(!isset($_SESSION['user_id'])){
 ?>
 <form action="/add_product" method="POST">
     <div class="container">
-        <h2>Add product</h2><label style="color: green;">
-            <?php
-            if(!empty($result)){
-                echo "Product has added!";
-            }
-            ?></label>
+        <h2>Add product</h2>
         <p>
             Please fill in this form to add a product.</p>
         <hr>
 
         <label for="name"><b>Product ID</b></label>
         <label style="color: red;">
-            <?php echo $errors['product_id']??"";?></label>
+            <?php echo $err['product_id']??"";?></label>
         <input type="text" placeholder="Enter Product ID" name="product_id" id="name" required>
 
         <label for="email"><b>Quantity</b></label>
         <label style="color: red;">
-            <?php echo $errors['quantity']??"";?></label>
+            <?php echo $err['quantity']??"";?></label>
         <input type="text" placeholder="Enter Quantity" name="quantity" id="email" required>
-
+        <label style="color: red;">
+            <?php echo $err['userID']??"";?></label>
         <hr>
 
         <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
