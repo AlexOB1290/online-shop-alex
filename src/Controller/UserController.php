@@ -57,7 +57,7 @@ class UserController
         if(empty($errors['email'])) {
             require_once './../Model/User.php';
             $userModel = new User();
-            if ($userModel->getUserByEmail($_POST)) {
+            if ($userModel->getOneByEmail($_POST)) {
                 $errors['email'] = "this email exist";
             }
         }
@@ -83,7 +83,7 @@ class UserController
         if(empty($err)) {
             require_once './../Model/User.php';
             $userModel = new User();
-            $userModel->setUserData($_POST);
+            $userModel->setData($_POST);
         }
         require_once './../View/registrate.php';
     }
@@ -97,7 +97,7 @@ class UserController
     {
         require_once './../Model/User.php';
         $userModel = new User();
-        $res = $userModel->getUserByEmail($_POST);
+        $res = $userModel->getOneByEmail($_POST);
 
         $password = $_POST['psw'];
         $email = $_POST['email'];

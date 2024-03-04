@@ -2,7 +2,7 @@
 
 class Product
 {
-    public function setUserProdData(int $usID, array $post)
+    public function setUserProdData(int $usID, array $post): bool
     {
         $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
 
@@ -14,7 +14,7 @@ class Product
         return $stmt->execute(['user_id' => $user_id, 'product_id' => $product_id,'quantity' => $quantity]);
     }
 
-    public function getProdById(array $post)
+    public function getOneById(array $post): bool
     {
         $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
 
@@ -22,5 +22,13 @@ class Product
 
         $stmt = $db->prepare("SELECT * FROM user_products WHERE product_id = :product_id");
         return $stmt->execute(['product_id'=>$product_id]);
+    }
+
+    public function getAll(): false|array
+    {
+        $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
+        $stmt = $db->query("SELECT * FROM products");
+        $products = $stmt->fetchAll();
+        return $products;
     }
 }

@@ -5,10 +5,9 @@ if(!isset($_SESSION['user_id'])){
     header("Location: /login.php");
 }
 
-$db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
-$stmt = $db->query("SELECT * FROM products");
-$products = $stmt->fetchAll();
-if(empty($products)){
+require_once './../Model/Product.php';
+$prodModel = new Product();
+if(empty($prodModel->getAll())){
     echo 'Products does not exist';
     die();
 }
@@ -18,7 +17,7 @@ if(empty($products)){
 <div class="container">
   <h3>Catalog</h3>
     <div class="card-deck">
-        <?php foreach($products as $product): ?>
+        <?php foreach($prodModel->getAll() as $product): ?>
     <div class="card text-center">
       <a href="#">
         <div class="card-header">

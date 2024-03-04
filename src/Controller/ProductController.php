@@ -21,7 +21,7 @@ class ProductController
         if(empty($errors['product_id'])){
             require_once './../Model/Product.php';
             $prodModel = new Product();
-            if($prodModel->getProdById($_POST)){
+            if($prodModel->getOneById($_POST)){
                 $errors = [];
             } else {
                 $errors['product_id'] = "This product does not exist";

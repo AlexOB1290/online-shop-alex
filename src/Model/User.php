@@ -4,7 +4,7 @@
 
 class User
 {
-    public function getUserByEmail(array $val)
+    public function getOneByEmail(array $val): mixed
     {
         $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
 
@@ -14,7 +14,7 @@ class User
         $user->execute(['email' => $email]);
         return $user->fetch();
     }
-    public function setUserData(array $post)
+    public function setData(array $post): bool
     {
         $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");
 
