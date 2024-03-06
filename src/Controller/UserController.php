@@ -5,30 +5,47 @@
 class UserController
 {
 
-    private function validate(array $post): array
+    public function registrate(): void
+    {
+        require_once './../View/registrate.php';
+    }
+
+    public function postRegistrate(): void
+    {
+        $error = $this->validate($_POST);
+
+        if(empty($error)) {
+            require_once './../Model/User.php';
+            $userModel = new User();
+            $userModel->create($_POST['name'], $_POST['email'], $_POST['psw']);
+        }
+        require_once './../View/registrate.php';
+    }
+
+    private function validate(array $data): array
     {
         $errors = [];
 
-        if(isset($post['name'])){
-            $name = $post['name'];
+        if(isset($data['name'])){
+            $name = $data['name'];
         }else{
             $errors['name'] = "name must be fill";
         }
 
-        if(isset($post['email'])){
-            $email = $post['email'];
+        if(isset($data['email'])){
+            $email = $data['email'];
         }else{
             $errors['email'] = "email must be fill";
         }
 
-        if(isset($post['psw'])){
-            $password = $post['psw'];
+        if(isset($data['psw'])){
+            $password = $data['psw'];
         }else{
             $errors['psw'] = "psw must be fill";
         }
 
-        if(isset($post['psw-repeat'])){
-            $passwordRep = $post['psw-repeat'];
+        if(isset($data['psw-repeat'])){
+            $passwordRep = $data['psw-repeat'];
         }else{
             $errors['psw-repeat'] = "psw-repeat must be fill";
         }
@@ -54,10 +71,11 @@ class UserController
                 $errors['email'] = "email is wrong";
             }
         }
+
         if(empty($errors['email'])) {
             require_once './../Model/User.php';
             $userModel = new User();
-            if ($userModel->getOneByEmail($_POST)) {
+            if ($userModel->getUserByEmail($_POST['email'])) {
                 $errors['email'] = "this email exist";
             }
         }
@@ -72,22 +90,6 @@ class UserController
         return $errors;
     }
 
-    public function registrate(): void
-    {
-        require_once './../View/registrate.php';
-    }
-
-    public function postReg(): void
-    {
-        $err = $this->validate($_POST);
-        if(empty($err)) {
-            require_once './../Model/User.php';
-            $userModel = new User();
-            $userModel->setData($_POST);
-        }
-        require_once './../View/registrate.php';
-    }
-
     public function login(): void
     {
         require_once './../View/login.php';
@@ -95,24 +97,70 @@ class UserController
 
     public function postLogin(): void
     {
-        require_once './../Model/User.php';
-        $userModel = new User();
-        $res = $userModel->getOneByEmail($_POST);
-
-        $password = $_POST['psw'];
         $email = $_POST['email'];
+        $password = $_POST['psw'];
 
-        if (empty($res)){
+        $error = $this->validateLogin($_POST);
+
+        if(empty($error)) {
+            require_once './../Model/User.php';
+            $userModel = new User();
+            $user = $userModel->getUserByEmail($email);
+        }
+
+        if (empty($user)){
             $err = "User is not found";
-        }elseif(password_verify($password, $res['password']) && $email === $res['email']){
+        }elseif(password_verify($password, $user['password'])){
             session_start();
-            $_SESSION['user_id'] = $res['id'];
+            $_SESSION['user_id'] = $user['id'];
 
-            header("Location: /main.php");
+            header('Location: main');
         }else{
             $err = "Password or email are wrong!";
         }
         require_once './../View/login.php';
+        print_r($error);
     }
+    private function validateLogin(array $data): array
+    {
+        $errors = [];
+
+        if(isset($data['email'])){
+            $email = $data['email'];
+        }else{
+            $errors['email'] = "email must be fill";
+        }
+
+        if(isset($data['psw'])){
+            $password = $data['psw'];
+        }else{
+            $errors['psw'] = "psw must be fill";
+        }
+
+        if(empty($email)){
+            $errors['email'] = "email not be empty";
+        }elseif(strlen($email)<2){
+            $errors['email'] = "email must be more 1 symbols";
+        }elseif(strlen($email)>2){
+            $res = "";
+            for($i=0; $i < strlen($email); $i++) {
+                if ($email[$i] === "@") {
+                    $res = $res.$email[$i];
+                }
+            }
+            if(strlen($res)!==1){
+                $errors['email'] = "email is wrong";
+            }
+        }
+
+        if(empty($password)){
+            $errors['psw'] = "password not be empty";
+        }elseif(strlen($password)<5) {
+            $errors['psw'] = "password must be more 4 symbols";
+        }
+
+        return $errors;
+    }
+
 }
 

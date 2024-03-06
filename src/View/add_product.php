@@ -1,10 +1,4 @@
-<?php
-session_start();
-if(!isset($_SESSION['user_id'])){
-    header("Location: /login.php");
-}
 
-?>
 <form action="/add_product" method="POST">
     <div class="container">
         <h2>Add product</h2>
@@ -14,15 +8,15 @@ if(!isset($_SESSION['user_id'])){
 
         <label for="name"><b>Product ID</b></label>
         <label style="color: red;">
-            <?php echo $err['product_id']??"";?></label>
+            <?php echo $error['product_id']??"";?></label>
         <input type="text" placeholder="Enter Product ID" name="product_id" id="name" required>
 
         <label for="email"><b>Quantity</b></label>
         <label style="color: red;">
-            <?php echo $err['quantity']??"";?></label>
+            <?php echo $error['quantity']??"";?></label>
         <input type="text" placeholder="Enter Quantity" name="quantity" id="email" required>
         <label style="color: red;">
-            <?php echo $err['userID']??"";?></label>
+            <?php echo $error['userID']??"";?></label>
         <hr>
 
         <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>

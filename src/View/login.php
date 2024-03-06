@@ -3,7 +3,11 @@
     <h2>Login</h2>
       <form action="" method="POST">
         <input type="text" id="email" name="email" placeholder="Enter email" required>
+          <label style="color: red;">
+              <?php echo $error['email'] ?? "";?></label>
             <input type="password" id="psw" name="psw" placeholder="Enter password" required>
+          <label style="color: red;">
+              <?php echo $error['psw'] ?? "";?></label>
           <label style="color: red;">
                   <?php echo $err ?? "";?></label>
       <button type="submit">Login</button>

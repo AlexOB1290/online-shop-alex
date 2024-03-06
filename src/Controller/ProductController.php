@@ -2,26 +2,26 @@
 
 class ProductController
 {
-    private function validate(int $userID, array $post): array
+    private function validate(int $userID, int $product_id, int $quantity): array
     {
         $errors = [];
 
-        if(isset($post['product_id'])){
-            $product_id = $post['product_id'];
-        }else{
+        if(!isset($userID)){
+            $errors['userId'] = "userID is not found";
+        }
+
+        if(!isset($product_id)){
             $errors['product_id'] = "product_id must be fill";
         }
 
-        if(isset($post['quantity'])){
-            $quantity = $post['quantity'];
-        }else{
+        if(!isset($quantity)){
             $errors['quantity'] = "quantity must be fill";
         }
 
         if(empty($errors['product_id'])){
             require_once './../Model/Product.php';
-            $prodModel = new Product();
-            if($prodModel->getOneById($_POST)){
+            $productModel = new Product();
+            if($productModel->getProductById($product_id)){
                 $errors = [];
             } else {
                 $errors['product_id'] = "This product does not exist";
@@ -34,26 +34,33 @@ class ProductController
             $errors['quantity'] = "quantity must be more 0";
         }
 
-        if(!isset($userID)){
-            $errors['userId'] = "userID is not found";
-        }
         return $errors;
     }
 
-    public function addProd(): void
+    public function addProduct(): void
     {
         require_once './../View/add_product.php';
     }
 
-    public function addUserProd(): void
+    public function addUserProduct(): void
     {
         session_start();
-        $err = $this->validate($_SESSION['user_id'], $_POST);
-        if(empty($err)) {
+        if(!isset($_SESSION['user_id'])){
+            header('Location: /login');
+        }
+
+        $error = $this->validate($_SESSION['user_id'], $_POST['product_id'], $_POST['quantity']);
+        if(empty($error)) {
             require_once './../Model/Product.php';
             $userModel = new Product();
-            $userModel->setUserProdData($_SESSION['user_id'], $_POST);
+            $userModel->addUserProduct($_SESSION['user_id'], $_POST['product_id'], $_POST['quantity']);
         }
-        require_once './../View/add_product.php';
+
+        $productModel = new Product();
+        if(empty($productModel->getAll())){
+            echo 'Products does not exist';
+        } else {
+            require_once './../View/main.php';
+        }
     }
 }

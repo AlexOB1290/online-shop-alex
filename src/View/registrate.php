@@ -7,22 +7,22 @@
 
         <label for="name"><b>Name</b></label>
         <label style="color: red;">
-            <?php echo $err['name']??"";?></label>
+            <?php echo $error['name']??"";?></label>
         <input type="text" placeholder="Enter Name" name="name" id="name" required>
 
         <label for="email"><b>Email</b></label>
         <label style="color: red;">
-            <?php echo $err['email']??"";?></label>
+            <?php echo $error['email']??"";?></label>
         <input type="text" placeholder="Enter Email" name="email" id="email" required>
 
         <label for="psw"><b>Password</b></label>
         <label style="color: red;">
-            <?php echo $err['psw']??"";?></label>
+            <?php echo $error['psw']??"";?></label>
         <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
 
         <label for="psw-repeat"><b>Repeat Password</b></label>
         <label style="color: red;">
-            <?php echo $err['psw-repeat']??"";?></label>
+            <?php echo $error['psw-repeat']??"";?></label>
         <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
         <hr>
 

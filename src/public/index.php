@@ -2,18 +2,20 @@
 $uri = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
 
+require_once './../Controller/UserController.php';
+require_once './../Controller/ProductController.php';
+require_once './../Controller/MainController.php';
+
 if($uri === '/registrate'){
-    require_once './../Controller/UserController.php';
     $reg = new UserController();
     if($method === 'GET'){
         $reg->registrate();
     }elseif ($method === 'POST'){
-        $reg->postReg();
+        $reg->postRegistrate();
     } else {
         echo "$method do not support for $uri";
     }
 } elseif ($uri === '/login'){
-    require_once './../Controller/UserController.php';
     $log = new UserController();
     if($method === 'GET'){
         $log->login();
@@ -22,19 +24,22 @@ if($uri === '/registrate'){
     } else {
         echo "$method do not support for $uri";
     }
-} elseif ($uri === '/add_product') {
-    require_once './../Controller/ProductController.php';
-    $prod = new ProductController();
-    if ($method === 'GET') {
-        $prod->addProd();
-    } elseif ($method === 'POST') {
-        $prod->addUserProd();;
-    } else {
-        echo "$method do not support for $uri";
-    }
+//} elseif ($uri === '/add_product') {
+//    $prod = new ProductController();
+//    if ($method === 'GET') {
+//        $prod->addProduct();
+//    } elseif ($method === 'POST') {
+//        $prod->addUserProduct();
+//    } else {
+//        echo "$method do not support for $uri";
+//    }
 } elseif ($uri === '/main'){
+    $main = new MainController();
+    $prod = new ProductController();
     if($method === 'GET'){
-        require_once 'main.php';
+        $main->getMainPage();
+    } elseif ($method === 'POST') {
+        $prod->addUserProduct();
     } else {
         echo "$method do not support for $uri";
     }
