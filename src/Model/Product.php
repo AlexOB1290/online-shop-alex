@@ -2,6 +2,7 @@
 
 class Product
 {
+
     public function addUserProduct(int $user_id, int $product_id, int $quantity): bool
     {
         $db = new PDO("pgsql:host=postgres; port=5432; dbname=dbtest", "dbroot", "dbroot");

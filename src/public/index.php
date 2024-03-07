@@ -2,9 +2,22 @@
 $uri = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
 
-require_once './../Controller/UserController.php';
-require_once './../Controller/ProductController.php';
-require_once './../Controller/MainController.php';
+$autoloadController = function (string $className) {
+    $path = "./../Controller/$className.php";
+    if (file_exists($path)) {
+        require_once $path;
+
+        return true;
+    }
+
+    return false;
+};
+
+spl_autoload_register($autoloadController);
+
+//require_once './../Controller/UserController.php';
+//require_once './../Controller/ProductController.php';
+//require_once './../Controller/MainController.php';
 
 if($uri === '/registrate'){
     $reg = new UserController();
