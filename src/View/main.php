@@ -1,8 +1,10 @@
 
 <div class="container">
-  <h3>Catalog</h3>
+  <h3>Main Catalog</h3>
+
+
     <div class="card-deck">
-        <?php foreach($productModel->getAll() as $product): ?>
+        <?php foreach($this->productModel->getAll() as $product): ?>
         <form action="/main" method="POST">
             <div class="card text-center">
                 <a href="#">
@@ -20,6 +22,11 @@
                         <input type="text" placeholder="Enter Quantity" name="quantity" id="quantity" required>
                         <button type="submit" class="registerbtn">Add</button>
                     </div>
+                    <label>
+                        <?php
+                        echo $error['quantity'] ?? "";
+                        ?>
+                    </label>
                 </a>
             </div>
         </form>

@@ -4,25 +4,33 @@
 
 class UserController
 {
+    private User $userModel;
+    private string $pathRegistrate;
+    private string $pathLogin;
+
+    public function __construct()
+    {
+        $this->userModel = new User();
+        $this->pathRegistrate = './../View/registrate.php';
+        $this->pathLogin = './../View/login.php';
+    }
 
     public function registrate(): void
     {
-        require_once './../View/registrate.php';
+        require_once $this->pathRegistrate;
     }
 
     public function postRegistrate(): void
     {
-        $error = $this->validate($_POST);
+        $error = $this->validateRegistrate($_POST);
 
         if(empty($error)) {
-            require_once './../Model/User.php';
-            $userModel = new User();
-            $userModel->create($_POST['name'], $_POST['email'], $_POST['psw']);
+            $this->userModel->createUser($_POST['name'], $_POST['email'], $_POST['psw']);
         }
-        require_once './../View/registrate.php';
+        require_once $this->pathRegistrate;
     }
 
-    private function validate(array $data): array
+    private function validateRegistrate(array $data): array
     {
         $errors = [];
 
@@ -73,9 +81,7 @@ class UserController
         }
 
         if(empty($errors['email'])) {
-            require_once './../Model/User.php';
-            $userModel = new User();
-            if ($userModel->getUserByEmail($_POST['email'])) {
+            if ($this->userModel->getOneByEmail($_POST['email'])) {
                 $errors['email'] = "this email exist";
             }
         }
@@ -92,25 +98,20 @@ class UserController
 
     public function login(): void
     {
-        require_once './../View/login.php';
+        require_once $this->pathLogin;
     }
 
     public function postLogin(): void
     {
-        $email = $_POST['email'];
-        $password = $_POST['psw'];
-
         $error = $this->validateLogin($_POST);
 
         if(empty($error)) {
-            require_once './../Model/User.php';
-            $userModel = new User();
-            $user = $userModel->getUserByEmail($email);
+            $user = $this->userModel->getOneByEmail($_POST['email']);
         }
 
         if (empty($user)){
             $err = "User is not found";
-        }elseif(password_verify($password, $user['password'])){
+        }elseif(password_verify($_POST['psw'], $user['password'])){
             session_start();
             $_SESSION['user_id'] = $user['id'];
 
@@ -118,8 +119,7 @@ class UserController
         }else{
             $err = "Password or email are wrong!";
         }
-        require_once './../View/login.php';
-        print_r($error);
+        require_once $this->pathLogin;
     }
     private function validateLogin(array $data): array
     {
