@@ -1,8 +1,10 @@
 
 <div class="container">
   <h3>Main Catalog</h3>
-
-
+    <form action="/cart" method="GET">
+        <a href="/cart">
+        <button type="button" class="image-button">Cart</button>
+    </form>
     <div class="card-deck">
         <?php foreach($this->productModel->getAll() as $product): ?>
         <form action="/main" method="POST">
@@ -89,5 +91,30 @@
         height: 100%;
         object-fit: cover;
         object-position: 0 0;
+    }
+
+    .registerbtn {
+        background-color: #04AA6D;
+        color: white;
+        padding: 16px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
+    }
+
+    .registerbtn:hover {
+        opacity:1;
+    }
+
+    .image-button {
+        width: 100px;
+        height: 50px;
+        border: none;
+        background-image: url("cart-icon.png");
+        background-size: cover;
+        border-radius: 4px;
+        cursor: pointer;
     }
 </style>

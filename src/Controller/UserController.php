@@ -162,5 +162,13 @@ class UserController
         return $errors;
     }
 
+    public function logOut()
+    {
+        $_SESSION = [];
+        session_destroy();
+
+        header('Location: /login');
+    }
+
 }
 

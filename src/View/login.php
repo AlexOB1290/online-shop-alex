@@ -65,17 +65,18 @@
     }
 
     button {
-        background-color: dodgerblue;
-        color: #fff;
-        padding: 10px;
+        background-color: #04AA6D;
+        color: white;
+        padding: 16px 20px;
+        margin: 8px 0;
         border: none;
-        border-radius: 4px;
         cursor: pointer;
-        transition: background-color 0.3s ease-in-out;
+        width: 100%;
+        opacity: 0.9;
     }
 
     button:hover {
-        background-color: dodgerblue;
+        opacity:1;
     }
 
 </style>

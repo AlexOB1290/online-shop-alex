@@ -43,7 +43,7 @@ class App
                 echo "$method do not support for $uri";
             }
         } else {
-            require_once '404.html';
+            require_once './../public/404.html';
         }
     }
 }
